@@ -30,17 +30,18 @@ public class ProductDaoImpl implements ProductDao {
         String sql ="select  count(*) from product WHERE 1=1";
 
         Map<String,Object> map= new HashMap<>();
-
+        sql =addFilteringSql(sql,map,productQueryParams);
         //Query condition
-        if(productQueryParams.getCategory()!=null){
+        // retrive the reapeative codes to addFileringSql()
+      /*  if(productQueryParams.getCategory()!=null){
             sql =sql + " AND category=:category";
             map.put("category",productQueryParams.getCategory().name());
         }
         if(productQueryParams.getSearch()!=null){
             sql =sql + " AND product_name LIKE :search";
             map.put("search","%"+productQueryParams.getSearch()+"%");
-        }
-       //System.out.println("line 43:"+sql);
+        } */
+
         Integer total =namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
         return total;
     }
@@ -51,6 +52,9 @@ public class ProductDaoImpl implements ProductDao {
                 "image_url ,   price  ,  stock  ,description ,  created_date ,"+
                 "last_modified_date from product WHERE 1=1";
         Map<String,Object>map= new HashMap<>();
+        sql =addFilteringSql(sql,map,productQueryParams);
+        // retrive the repeative codes to addFileringSql()
+        /*
         if(productQueryParams.getCategory()!=null){
             sql =sql + " AND category=:category";
             map.put("category",productQueryParams.getCategory().name());
@@ -59,6 +63,7 @@ public class ProductDaoImpl implements ProductDao {
             sql =sql + " AND product_name LIKE :search";
             map.put("search","%"+productQueryParams.getSearch()+"%");
         }
+        */
         sql = sql + " ORDER BY "+productQueryParams.getOrderBy()+" "+productQueryParams.getSort();
         //pagination
         sql = sql+ " LIMIT :limit OFFSET :offset";
@@ -131,6 +136,18 @@ public class ProductDaoImpl implements ProductDao {
          Map<String,Object>map =new HashMap<>();
         map.put("productId",productId);
          namedParameterJdbcTemplate.update(sql,map);
+     }
+     //將 getProduct and countProduct method裡面 重複的程式碼 抽出來
+     private String addFilteringSql(String sql,Map<String,Object> map,ProductQueryParams productQueryParams){
+         if(productQueryParams.getCategory()!=null){
+             sql =sql + " AND category=:category";
+             map.put("category",productQueryParams.getCategory().name());
+         }
+         if(productQueryParams.getSearch()!=null){
+             sql =sql + " AND product_name LIKE :search";
+             map.put("search","%"+productQueryParams.getSearch()+"%");
+         }
+         return sql;
      }
 
 }
