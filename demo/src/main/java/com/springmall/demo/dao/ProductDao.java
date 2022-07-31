@@ -7,7 +7,8 @@ import com.springmall.demo.model.Product;
 import java.util.List;
 
 public interface ProductDao {
-    public List<Product> getProducts(ProductQueryParams productQueryParams);
+    Integer countProduct(ProductQueryParams productQueryParams);
+    List<Product> getProducts(ProductQueryParams productQueryParams);
     Product getProductById(Integer productId);
     Integer createProduct(ProductRequest productRequest);
     void updateProduct(Integer productId,ProductRequest productRequest);
