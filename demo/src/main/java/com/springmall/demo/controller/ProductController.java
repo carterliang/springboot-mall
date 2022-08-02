@@ -50,7 +50,7 @@ public class ProductController {
         page.setLimit(limit);
         page.setOffset(offset);
         page.setTotal(total);
-        page.setResult(productList);
+        page.setResults(productList);
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
     @GetMapping("/products/{productId}")
