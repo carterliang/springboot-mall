@@ -1,6 +1,6 @@
 package com.springmall.demo.service;
 
-import com.springmall.demo.constant.ProductCategory;
+
 import com.springmall.demo.dao.ProductQueryParams;
 import com.springmall.demo.dto.ProductRequest;
 import com.springmall.demo.model.Product;
