@@ -5,6 +5,7 @@ import com.springmall.demo.dao.ProductDao;
 import com.springmall.demo.dao.UserDao;
 import com.springmall.demo.dto.BuyItem;
 import com.springmall.demo.dto.CreateOrderRequest;
+import com.springmall.demo.dto.OrderQueryParams;
 import com.springmall.demo.model.Order;
 import com.springmall.demo.model.OrderItem;
 import com.springmall.demo.model.Product;
@@ -30,6 +31,24 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private UserDao userDao;
     private final static Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
+
+
+
+    @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+        List<Order>orderList = orderDao.getOrders(orderQueryParams);
+        for(Order order : orderList){
+           List<OrderItem>orderItemList = orderDao.getOrderItemsByOrderId(order.getOrderId());
+           order.setOrderItemList(orderItemList);
+        }
+        return orderList;
+    }
+
+    @Override
+    public Integer countOrder(OrderQueryParams orderQueryParams) {
+
+        return orderDao.countOrder(orderQueryParams);
+    }
 
     @Override
     public Order getOrderById(Integer orderId) {
