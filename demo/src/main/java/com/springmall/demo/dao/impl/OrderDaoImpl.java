@@ -76,8 +76,8 @@ class OrderDaoImpl implements OrderDao {
     @Override
     public void createOrderItems(Integer orderId, List<OrderItem> orderItemList) {
         // 使用 for loop 一條一條 sql 加入數居,效率很低
-     for(OrderItem orderItem : orderItemList){
-           String sql = "INSERT INTO order_item (order_id, product_id,quantity,amount)"+
+   /*for(OrderItem orderItem : orderItemList){
+           String sql = "INSERT INTO order_item (order_id, product_id,quantity,amount) "+
                    "Values (:orderId, :productId ,:quantity, :amount)";
            Map <String,Object>map = new HashMap<>();
            map.put("orderId",orderId);
@@ -86,20 +86,20 @@ class OrderDaoImpl implements OrderDao {
            map.put("amount",orderItem.getAmount());
            namedParameterJdbcTemplate.update(sql,map);
        }
-
+*/
         //使用 batchUpdate 一次性加入數據,效率告高
-       /* String sql = "Insert Into order_item(order_id,product_id,quantity,amount)"+
+         String sql = "Insert Into order_item(order_id,product_id,quantity,amount)"+
                 "Values (:orderId, :productId , :quantity, :amount)";
         MapSqlParameterSource[]parameterSources = new MapSqlParameterSource[orderItemList.size()];
         for(int i=0;i< orderItemList.size();i++){
             OrderItem orderItem =orderItemList.get(i);
             parameterSources[i]= new MapSqlParameterSource();
-            parameterSources[i].addValues("orderId",orderId);
-            parameterSources[i].addValues("productId",orderItem.getProductId());
-            parameterSources[i].addValues("quantity",orderItem.getQuantity());
-            parameterSources[i].addValues("amount",orderItem.getAmount());
+            parameterSources[i].addValue("orderId",orderId);
+            parameterSources[i].addValue("productId",orderItem.getProductId());
+            parameterSources[i].addValue("quantity",orderItem.getQuantity());
+            parameterSources[i].addValue("amount",orderItem.getAmount());
         }
-        namedParameterJdbcTemplate.batchUpdate(sql,parameterSources); */
+        namedParameterJdbcTemplate.batchUpdate(sql,parameterSources);
     }
 
 
